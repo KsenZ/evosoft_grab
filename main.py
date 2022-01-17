@@ -16,7 +16,8 @@ def get_proxy():
     tds = soup.find("tbody").find_all("tr")
     proxies = []
     for io in tds:
-        proxies.append(f"{io.find_all('td')[0].text}:{io.find_all('td')[1].text}")
+        if io.find_all('td')[6].text == "yes":
+            proxies.append(f"{io.find_all('td')[0].text}:{io.find_all('td')[1].text}")
     return proxies
 
 
@@ -28,7 +29,7 @@ def main():
     options.add_experimental_option("useAutomationExtension", False)
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36")
-    options.add_argument(f"proxy-server={random.choice(get_proxy())}")
+    # options.add_argument(f"proxy-server={random.choice(get_proxy())}")
 
     service = ChromeService(executable_path="driver/chromedriver")
     driver = webdriver.Chrome(service=service, options=options)
@@ -84,3 +85,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # proxy = get_proxy()
+    # print(proxy)
